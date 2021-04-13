@@ -5,7 +5,7 @@ const Student = (props) => {
 
   const attendHandler = () => {
     setChecked((checked) => !checked);
-    props.changeAttend(props.studentInfo.student_id, !checked);  
+    props.changeAttend(props.studentInfo.student_id, !checked);
   };
 
   return (
@@ -36,16 +36,21 @@ const Attending = (props) => {
   const allTrue = props.Students.filter((student) => student.present == true);
 
   return (
-    <>
-      <button onClick={back}>Tillbaka</button>
-      <h3>
-        <p>Vill du dra in CSN för en snorvalp eller två?</p>
-        <p>klicka i frånvarande!</p>
-      </h3>
-      <p>Antalet närvarande i klassen: {allTrue.length}</p>
-      <p>
-        Antalet frånvarande i klassen: {props.Students.length - allTrue.length}
-      </p>
+    <ul className="theList">
+      <div className="infoBox">
+        <button className="spaceBtn" onClick={back}>
+          Tillbaka
+        </button>
+        <h2>Kursnärvaro</h2>
+        <p>
+          Vill du dra in CSN för en snorvalp eller två? klicka i frånvarande!
+        </p>
+
+        <p>
+          Antalet närvarande i klassen: {allTrue.length}, frånvarande:{" "}
+          {props.Students.length - allTrue.length}
+        </p>
+      </div>
       <ul className="attendingList">
         {props.Students.map((studentInfo, index) => (
           <Student
@@ -55,7 +60,7 @@ const Attending = (props) => {
           />
         ))}
       </ul>
-    </>
+    </ul>
   );
 };
 

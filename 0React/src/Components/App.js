@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Title from "./Title";
-import StudentsBox from "./StudentsBox";
-import Count from "./Count";
+import EditMode from "./EditMode";
 import Welcome from "./Welcome";
 import EditView from "./EditView";
 import Form from "./Form";
@@ -37,9 +35,8 @@ const App = () => {
         present: studentBool,
       }),
     });
-    if (response.ok) {
-      fetchStudents();
-    }
+
+    fetchStudents();
   };
 
   const addStudent = (newStudent) => {
@@ -97,7 +94,7 @@ const App = () => {
   }
 
   switch (view) {
-    case "attending":
+    case "attendMode":
       console.log(Students);
       return (
         <div className="wrapper">
@@ -120,19 +117,18 @@ const App = () => {
           />
         </div>
       );
-    case "list":
+    case "editMode":
       return (
         <>
           <div className="wrapper">
-            <Title setView={setView} runFetch={fetchStudents} />
-            <StudentsBox
+            <EditMode
               Students={Students}
               removeStudent={removeStudent}
               gotoStudent={gotoStudent}
+              setView={setView}
             />
-            <Count removeAll={removeAll} length={Students.length} />
           </div>
-          <Form onSubmit={handleForm} />
+          <Form onSubmit={handleForm} setView={setView} />
         </>
       );
     default:

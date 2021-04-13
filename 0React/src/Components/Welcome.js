@@ -2,20 +2,24 @@ import React from "react";
 
 const Welcome = (props) => {
   const editModeHandler = () => {
-    props.setView("list");
+    props.setView("editMode");
   };
 
   const readModeHandler = () => {
-    props.setView("attending");
+    props.setView("attendMode");
   };
 
   return (
     <div>
       <h3>Välkommen till Skolsoft V.1.0</h3>
-      <p>Här kan du anmäla frånvaror och lägga till studenter.</p>
+      <p>Här kan du anmäla frånvaro och lägga till studenter.</p>
 
-      <button onClick={readModeHandler}>Kolla närvaro</button>
-      <button onClick={editModeHandler}>Administrera elver</button>
+      <button className="spaceBtn" onClick={readModeHandler}>
+        Kolla närvaro
+      </button>
+      <button className="spaceBtn" onClick={editModeHandler}>
+        Administrera elever
+      </button>
     </div>
   );
 };

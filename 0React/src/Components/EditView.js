@@ -1,26 +1,22 @@
 import React, { useState } from "react";
 
 const EditView = (props) => {
-  const { name, last_name, age, present, student_id } = props.specificStudent;
+  const { name, last_name, age, student_id } = props.specificStudent;
   const [textName, setTextName] = useState(name);
   const [textLastName, setLastName] = useState(last_name);
-  const [checked, setChecked] = useState(present);
+  const [ageText, setAgeText] = useState(age);
 
   const texthandler = (event) => setTextName(event.target.value);
   const texthandler2 = (event) => setLastName(event.target.value);
+  const ageHandler = (event) => setAgeText(event.target.value);
 
   const abortHandler = () => {
-    props.setView("default");
-  };
-
-  const checkHandler = () => {
-    setChecked((onOff) => !onOff);
+    props.setView("editMode");
   };
 
   const submitHandler = () => {
-    const index = props.index;
-    console.dir(props);
-    props.onSubmit({ textName, textLastName, age, checked, student_id });
+    props.onSubmit({ textName, textLastName, age, student_id });
+    props.setView("editMode");
   };
 
   return (
@@ -43,15 +39,23 @@ const EditView = (props) => {
           onChange={texthandler2}
         />
       </div>
-      <div>Age: {age}</div>
-      <label>Attending: </label>
-      <input type="checkbox" defaultChecked={checked} onChange={checkHandler} />
-      <button className="doneBtn" type="submit">
-        CHANGE
-      </button>
-      <button className="doneBtn" onClick={abortHandler}>
-        GO BACK
-      </button>
+      <div>
+        <label>Age: </label>
+        <input
+          value={ageText}
+          type="text"
+          style={{ width: "50%" }}
+          onChange={ageHandler}
+        />
+      </div>
+      <div>
+        <button className="spaceBtn" onClick={abortHandler}>
+          Tillbaka
+        </button>
+        <button className="spaceBtn" type="submit">
+          Ändra värden
+        </button>
+      </div>
     </form>
   );
 };

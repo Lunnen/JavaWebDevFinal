@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
 const Form = (props) => {
-  const [checked, setChecked] = useState(false);
-
   const onSubmit = (data) => {
-    data.preventDefault();
+    //data.preventDefault();
 
     fetch(`http://localhost:8080/students/`, {
       method: "POST",
@@ -14,41 +12,34 @@ const Form = (props) => {
         name: data.target[0].value,
         last_name: data.target[1].value,
         age: data.target[2].value,
-        present: checked,
+        present: false,
       }),
     });
-  };
-
-  const checkHandler = () => {
-    setChecked((check) => !check);
+    //props.setView("editMode");
   };
 
   return (
     <form className="wrapper" onSubmit={onSubmit}>
-      <div>
-        <label>First Name:</label>
-        <input name="name" />
-      </div>
-      <div>
-        <label>Last Name:</label>
-        <input name="lastName" />
-      </div>
-      <div>
-        <label>Age:</label>
-        <input name="age" />
-      </div>
-      <div>
-        <label>Attending:</label>
-        <input
-          type="checkbox"
-          defaultChecked={checked}
-          onChange={checkHandler}
-        />
-      </div>
+      <ul className="theList">
+        <h2>Lägg till ny student</h2>
+        <li>
+          <input className="wideInput" name="name" placeholder="Förnamn" />
+        </li>
+        <li>
+          <input
+            className="wideInput"
+            name="lastName"
+            placeholder="Efternamn"
+          />
+        </li>
+        <li>
+          <input className="wideInput" name="age" placeholder="Ålder" />
+        </li>
 
-      <button className="doneBtn" type="submit">
-        SUBMIT
-      </button>
+        <button className="defBtn wideBtn" type="submit">
+          SUBMIT
+        </button>
+      </ul>
     </form>
   );
 };
