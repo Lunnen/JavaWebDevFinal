@@ -5,7 +5,7 @@ const Student = (props) => {
 
   const attendHandler = () => {
     setChecked((checked) => !checked);
-    props.changeAttend(props.studentInfo.student_id, checked);
+    props.changeAttend(props.studentInfo.student_id, !checked);  
   };
 
   return (
