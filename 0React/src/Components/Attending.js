@@ -6,6 +6,8 @@ const Student = (props) => {
   const attendHandler = () => {
     setChecked((checked) => !checked);
     props.changeAttend(props.studentInfo.student_id, !checked);
+
+    props.update();
   };
 
   return (
@@ -33,7 +35,15 @@ const Attending = (props) => {
     props.setView("default");
   };
 
-  const allTrue = props.Students.filter((student) => student.present == true);
+  const [numerOfAttending, setnumberOfAttending] = useState(
+    props.Students.filter((student) => student.present === true)
+  );
+
+  const update = () => {
+    setnumberOfAttending(
+      props.Students.filter((student) => student.present === true)
+    );
+  };
 
   return (
     <ul className="theList">
@@ -43,12 +53,13 @@ const Attending = (props) => {
         </button>
         <h2>Kursnärvaro</h2>
         <p>
-          Vill du dra in CSN för en snorvalp eller två? klicka i frånvarande!
+          Vill du dra in CSN för en student eller två? klicka i frånvarande!
         </p>
 
         <p>
-          Antalet närvarande i klassen: {allTrue.length}, frånvarande:{" "}
-          {props.Students.length - allTrue.length}
+          Antalet närvarande i klassen:{" "}
+          <strong>{numerOfAttending.length}</strong>, frånvarande:{" "}
+          <strong>{props.Students.length - numerOfAttending.length}</strong>
         </p>
       </div>
       <ul className="attendingList">
@@ -57,6 +68,7 @@ const Attending = (props) => {
             key={index}
             studentInfo={studentInfo}
             changeAttend={props.changeAttend}
+            update={update}
           />
         ))}
       </ul>

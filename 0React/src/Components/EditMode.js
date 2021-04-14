@@ -1,13 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 const Student = (props) => {
-  const attendHandler = () => {
-    props.changeAttend(
-      props.studentInfo.student_id,
-      !props.studentInfo.present
-    );
-  };
-
   const removeHandler = () => {
     props.removeFunc(props.studentInfo, props.student_id);
   };
@@ -38,13 +31,12 @@ const EditMode = (props) => {
       <button className="spaceBtn" onClick={back}>
         Tillbaka
       </button>
-      <header>Kursnärvaro</header>
+      <header>Administrera elever</header>
 
       {props.Students.map((studentInfo, index) => (
         <Student
           key={index}
           removeFunc={props.removeStudent}
-          finished={index % 2 === 0}
           studentInfo={studentInfo}
           gotoStudent={props.gotoStudent}
         />

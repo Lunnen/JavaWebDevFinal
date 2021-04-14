@@ -7,7 +7,6 @@ import Attending from "./Attending";
 
 const App = () => {
   const [Students, setStudents] = useState([]);
-  //const [loaded, setLoaded] = useState(false);
   const [view, setView] = useState("default");
   const [specificStudent, setSpecificStudent] = useState({});
 
@@ -17,85 +16,74 @@ const App = () => {
 
   const fetchStudents = async () => {
     const res = await fetch("http://localhost:8080/students");
-    const input = await res.json();
-    setStudents(input);
-    if (input.ok) {
+
+    if (res.ok) {
+      const input = await res.json();
       setStudents(input);
     }
   };
 
-  const changeAttend = (studentId, studentBool) => {
-    console.log(studentBool);
+  const removeStudent = async (props) => {
+    //To MySQL
+    fetch(`http://localhost:8080/students/${props.student_id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+    //To useState
+    setStudents(
+      Students.filter((item) => item.student_id !== props.student_id)
+    );
+  };
 
-    const response = fetch(`http://localhost:8080/students/${studentId}`, {
+  /* Edit View - Start */
+  const gotoStudent = (studentInfo) => {
+    setSpecificStudent(studentInfo);
+    setView("editView");
+  };
+
+  const specificIndex = Students.findIndex(function (el) {
+    return el === specificStudent.studentInfo;
+  });
+  /* Edit View - End */
+
+  const changeAttend = (studentId, studentBool) => {
+    fetch(`http://localhost:8080/students/${studentId}`, {
       method: "PUT",
-      mode: "cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         present: studentBool,
       }),
     });
 
-    fetchStudents();
-  };
-
-  const addStudent = (newStudent) => {
-    setStudents((prev) => [...prev, newStudent]);
-  };
-
-  const removeAll = () => {
-    setStudents([]);
-  };
-
-  const removeStudent = (props) => {
-    const response = fetch(
-      `http://localhost:8080/students/${props.student_id}`,
-      { method: "DELETE" }
-    );
-
-    if (response.ok) {
-      fetchStudents();
-    }
-  };
-
-  /* Edit View - Start */
-  const gotoStudent = (StudentMessage) => {
-    setSpecificStudent(StudentMessage);
-    setView("editView");
-  };
-
-  const specificIndex = Students.findIndex(function (el) {
-    return el === specificStudent.StudentMessage;
-  });
-  /* Edit View - End */
-
-  function handleForm(input) {
-    setStudents(function (prevState) {
-      return [...prevState, input]; //show previous info and add with new input from EmpForm
+    Students.map(function (student) {
+      if (student.student_id === studentId) {
+        student.present = studentBool;
+      }
     });
-  }
+  };
 
-  function onSubmit(input) {
+  function onChange(input) {
     fetch(`http://localhost:8080/students/${input.student_id}`, {
       method: "PUT",
-      mode: "cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: input.textName,
         last_name: input.textLastName,
-        age: input.age,
-        present: input.present,
-        student_id: input.student_id,
+        age: input.ageText,
       }),
     });
 
-    //setStudents(newArr);
-    setView("default");
+    Students.map(function (student) {
+      if (student.student_id === input.student_id) {
+        student.name = input.textName;
+        student.last_name = input.textLastName;
+        student.age = input.ageText;
+      }
+    });
   }
 
   switch (view) {
     case "attendMode":
-      console.log(Students);
       return (
         <div className="wrapper">
           <Attending
@@ -113,7 +101,7 @@ const App = () => {
             setStudents={setStudents}
             index={specificIndex}
             setView={setView}
-            onSubmit={onSubmit}
+            onSubmit={onChange}
           />
         </div>
       );
@@ -128,7 +116,7 @@ const App = () => {
               setView={setView}
             />
           </div>
-          <Form onSubmit={handleForm} setView={setView} />
+          <Form setView={setView} setStudents={setStudents} />
         </>
       );
     default:

@@ -1,21 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Form = (props) => {
   const onSubmit = (data) => {
-    //data.preventDefault();
+    data.preventDefault();
 
-    fetch(`http://localhost:8080/students/`, {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: data.target[0].value,
-        last_name: data.target[1].value,
-        age: data.target[2].value,
-        present: false,
-      }),
-    });
-    //props.setView("editMode");
+    const fetchUsers = async () => {
+      const resp = await fetch(`http://localhost:8080/students/`, {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.target[0].value,
+          last_name: data.target[1].value,
+          age: data.target[2].value,
+          present: false,
+        }),
+      });
+
+      if (resp.status !== 201) {
+        console.log("something's wrong");
+      }
+      const newUser = await resp.json();
+      props.setStudents((prev) => [...prev, newUser]);
+    };
+    fetchUsers();
+    data.target.reset();
   };
 
   return (

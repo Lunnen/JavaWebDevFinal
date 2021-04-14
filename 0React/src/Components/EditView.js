@@ -15,7 +15,7 @@ const EditView = (props) => {
   };
 
   const submitHandler = () => {
-    props.onSubmit({ textName, textLastName, age, student_id });
+    props.onSubmit({ textName, textLastName, ageText, student_id });
     props.setView("editMode");
   };
 
