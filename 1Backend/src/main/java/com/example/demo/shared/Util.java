@@ -17,6 +17,5 @@ public class Util {
             e.printStackTrace();
             return "can't return hash";
         }
-
     }
 }
