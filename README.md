@@ -1,5 +1,6 @@
 # JavaWebDevFinal
 Final assignment @ EC Java WebDev
+=> FULL STACK WEB APPLICATION
 
 Purpose is too have a database about attending students of a class.\
 Tools used => ReactJS frontend + SpringBoot/MySQL backend.
