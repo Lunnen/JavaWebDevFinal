@@ -19,8 +19,8 @@ import java.util.List;
 public class MainController {
 
      private final Service studentService;
-     public MainController(Service userService){ // better with dependancy (construktor) than @autowired. Cleaner code.
-         this.studentService = userService;
+     public MainController(Service studentService){ // better with dependancy (construktor) than @autowired. Cleaner code.
+         this.studentService = studentService;
      }
 
     @GetMapping
@@ -66,12 +66,12 @@ public class MainController {
     }
 
     @PutMapping(value = "/{student_id}")
-    public void updateStudent(@Valid @PathVariable("student_id") String student_id, @Valid @RequestBody RequestModel userDetailsModel){
+    public void updateStudent(@Valid @PathVariable("student_id") String student_id, @Valid @RequestBody RequestModel detailsModel){
         // copy json to dto in
-        StudentDto userDtoIn = new StudentDto();
-        BeanUtils.copyProperties(userDetailsModel, userDtoIn);
+        StudentDto dtoIn = new StudentDto();
+        BeanUtils.copyProperties(detailsModel, dtoIn);
 
-        studentService.updateStudent(student_id, userDtoIn);
+        studentService.updateStudent(student_id, dtoIn);
     }
 
     @DeleteMapping(path = "{student_id}")
